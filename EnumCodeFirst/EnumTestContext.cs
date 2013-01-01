@@ -5,7 +5,10 @@ namespace EnumCodeFirst
 {
     public class EnumTestContext : DbContext
     {
-        public EnumTestContext() : base("Name=EnumTest") { }    // Use the connection from app.config
+        public EnumTestContext() : base("Name=EnumTest")    // Use the connection from app.config
+        {
+            //this.Configuration.LazyLoadingEnabled = false;  // turn off all lazy loading.  The other way is to remove the virtual keyword from the poco
+        }
 
         static EnumTestContext()  
         {
@@ -16,10 +19,12 @@ namespace EnumCodeFirst
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            // Use singular table names
-            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();  // Use singular table names
+            //modelBuilder.Entity<Department>().Property(d => d.DepartmentHeadName).HasDatabaseGeneratedOption("xxx");
+
         }
 
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Student> People { get; set; }
     }
 }

@@ -14,16 +14,18 @@ namespace EnumCodeFirst
         {
             using (var db = new EnumTestContext())
             {
-                //db.Departments.Add(new Department() { Name = DepartmentNames.Maths, DepartmentHeadName = "fred" });
-                //db.Departments.Add(new Department() { Name = DepartmentNames.Economics });
-                //db.SaveChanges();
+                var depts = (from d in db.Departments
+                             select d).ToList();
 
-                Department dept = (from d in db.Departments
-                            where d.Name == DepartmentNames.Maths
-                            select d).FirstOrDefault();
-
-
-
+                foreach (var d in depts)
+                {
+                    Console.WriteLine("Department: {0}", d.Name);
+                    foreach (var s in d.Students)
+                    {
+                        Console.WriteLine("Student: {0}", s.Name);
+                    }
+                }
+                Console.ReadLine();
             }
         }
     }
